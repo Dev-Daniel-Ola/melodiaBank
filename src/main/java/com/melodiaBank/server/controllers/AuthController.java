@@ -5,18 +5,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.melodiaBank.server.dtos.requests.LoginRequestDTO;
 import com.melodiaBank.server.dtos.requests.RegisterRequestDTO;
+import com.melodiaBank.server.dtos.requests.LoginRequestDTO;
 import com.melodiaBank.server.dtos.responses.AuthResponseDTO;
 import com.melodiaBank.server.services.AuthService;
 
+
 @RestController 
 @RequestMapping("/api/auth")
-public class AuthController {
+public final class AuthController {
 
     private final AuthService authService;
 
-    AuthController(AuthService authService){
+    public AuthController(AuthService authService) {
         this.authService = authService;
     }
 
@@ -26,8 +27,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public AuthResponseDTO login(@RequestBody LoginRequestDTO request){
-        return authService.login(request);
+    public AuthResponseDTO login(@RequestBody LoginRequestDTO requestDTO){
+        return authService.login(requestDTO);
     }
-    
 }

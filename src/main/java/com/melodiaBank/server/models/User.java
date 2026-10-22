@@ -85,4 +85,8 @@ public class User {
     public LocalDateTime getCreatedAt() {
         return this.createdAt;
     }
+
+    public void setCreatedAt(LocalDateTime now) {
+        this.createdAt = now;
+    }
 }

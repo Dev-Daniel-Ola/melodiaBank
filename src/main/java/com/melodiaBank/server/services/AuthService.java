@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 import com.melodiaBank.server.dtos.requests.LoginRequestDTO;
 import com.melodiaBank.server.dtos.requests.RegisterRequestDTO;
 import com.melodiaBank.server.dtos.responses.AuthResponseDTO;
+import com.melodiaBank.server.exceptions.EmailAlreadyExistException;
+import com.melodiaBank.server.exceptions.UserNotFoundException;
 import com.melodiaBank.server.models.User;
 import com.melodiaBank.server.repositories.UserRepository;
-import com.melodiaBank.server.exceptions.EmailAlreadyExistException;
+import static com.melodiaBank.server.utils.Mapper.mapToResponseDTO;
 
 
 @Service
@@ -40,17 +42,7 @@ public class AuthService {
 
         User savedUser = userRepository.save(user);
 
-        AuthResponseDTO response = new AuthResponseDTO();
-        response.setId(savedUser.getId());
-        response.setFirstName(savedUser.getFirstName());
-        response.setLastName(savedUser.getLastName());
-        response.setEmail(savedUser.getEmail());
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/mm/yyyy hh:mm:ss a");
-
-        response.setCreatedAt(savedUser.getCreatedAt().format(formatter));
-        
-        return response;
+        return mapToResponseDTO(savedUser);
     }
 
     public AuthResponseDTO login(LoginRequestDTO request){
@@ -58,23 +50,14 @@ public class AuthService {
         User existingUser = userRepository.findByEmail(request.getEmail());
 
         if (existingUser == null){
+            throw new UserNotFoundException("Invalid email or password");
+        }
+
+        if (!existingUser.getPassword().equals(request.getPassword())){
+            LOGGER.error("Login request failed for: " + request.getEmail());
             throw new IllegalArgumentException("Invalid email or password");
         }
 
-        if (existingUser.getPassword() == request.getPassword()){
-            throw new IllegalArgumentException("Invalid email or password");
-        }
-
-        AuthResponseDTO response = new AuthResponseDTO();
-        response.setId(existingUser.getId());
-        response.setFirstName(existingUser.getFirstName());
-        response.setLastName(existingUser.getLastName());
-        response.setEmail(existingUser.getEmail());
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/mm/yyyy hh:mm:ss a");
-
-        response.setCreatedAt(existingUser.getCreatedAt().format(formatter));
-
-        return response;
+        return mapToResponseDTO(existingUser);
     }
 }
