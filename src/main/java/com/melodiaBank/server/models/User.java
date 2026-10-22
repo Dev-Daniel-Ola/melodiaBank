@@ -1,12 +1,16 @@
 package com.melodiaBank.server.models;
 
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import org.hibernate.annotations.CreationTimestamp;
-import java.time.LocalDateTime;
+import jakarta.validation.constraints.Email;
 
 @Entity
 @Table(name = "users")
@@ -20,12 +24,14 @@ public class User {
 
     private String lastName;
 
+    @Email
+    @Column(unique=true)
     private String email;
 
     private String password;
 
     @CreationTimestamp
-    private LocalDateTime created;
+    private LocalDateTime createdAt;
 
     public User() {}
 
@@ -76,7 +82,7 @@ public class User {
         this.password = password;
     }
 
-    public LocalDateTime getCreated() {
-        return this.created;
+    public LocalDateTime getCreatedAt() {
+        return this.createdAt;
     }
 }

@@ -1,6 +1,6 @@
 package com.melodiaBank.server.dtos.responses;
 
-public class RegisterResponseDTO {
+public class AuthResponseDTO {
 
     private Long id;
 
@@ -10,7 +10,7 @@ public class RegisterResponseDTO {
 
     private String email;
 
-    private String createAt;
+    private String createdAt;
 
     public Long getId() {
         return id;
@@ -44,11 +44,11 @@ public class RegisterResponseDTO {
         this.email = email;
     }
 
-    public String getCreateAt() {
-        return createAt;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreateAt(String createAt) {
-        this.createAt = createAt;
+    public void setCreatedAt(String createAt) {
+        this.createdAt = createAt;
     }
 }
