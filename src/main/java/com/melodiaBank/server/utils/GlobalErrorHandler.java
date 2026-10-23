@@ -16,10 +16,10 @@ public class GlobalErrorHandler {
     @ExceptionHandler({UserNotFoundException.class, IllegalArgumentException.class})
     public Map<String, Object> handleUserNotFoundException(RuntimeException exception){
 
-        Map<String, Object> error = new HashMap<>();
-        error.put("message", exception.getMessage());
-        error.put("status", HttpStatus.BAD_REQUEST);
-
-        return error;
+        return new HashMap<>(
+            Map.of(
+                "message", exception.getMessage(), 
+                "status", HttpStatus.BAD_REQUEST)
+        );
     }
 }
